@@ -1,2 +1,4 @@
 *.txt
 .vscode/
+*.bat
+__pycache__/
