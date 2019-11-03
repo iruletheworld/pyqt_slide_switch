@@ -45,9 +45,9 @@ class SlideSwitch(QAbstractButton):
     def __init__(self, parent=None,
                  track_radius=10, thumb_radius=14,
                  track_opacity=0.5,
+                 thumb_opacity=1.0, text_opacity=1.0,
                  color_palette=None,
                  thumb_txt_true='', thumb_txt_false='',
-                 thumb_opacity=1.0, text_opacity=1.0,
                  animate_dur=120):
 
         super(SlideSwitch, self).__init__(parent=parent)
@@ -59,8 +59,6 @@ class SlideSwitch(QAbstractButton):
         self._track_radius = track_radius
 
         self._thumb_radius = thumb_radius
-
-        self._track_opacity = track_opacity
 
         self._margin       = max(0, self._thumb_radius - self._track_radius)
 
@@ -76,6 +74,8 @@ class SlideSwitch(QAbstractButton):
         self.thumb_opacity = thumb_opacity
 
         self.text_opacity = text_opacity
+
+        self._track_opacity = track_opacity
 
         self.animate_dur = animate_dur
 
@@ -93,15 +93,13 @@ class SlideSwitch(QAbstractButton):
 
         else:
 
-            palette = color_palette
+            palette = self.palette()
 
         self.setPalette(palette=palette)
 
         self.setThumbText(text_true=thumb_txt_true, text_false=thumb_txt_false)
 
     def setPalette(self, palette):
-
-        # palette = self.palette()
 
         if self._thumb_radius > self._track_radius:
 
