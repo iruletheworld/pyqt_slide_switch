@@ -43,12 +43,12 @@ class SlideSwitch(QAbstractButton):
     '''
 
     def __init__(self, parent=None,
-                 track_radius=10, thumb_radius=14,
+                 track_radius=10, thumb_radius=18,
                  track_opacity=0.5,
                  thumb_opacity=1.0, text_opacity=1.0,
                  color_palette=None,
                  thumb_txt_true='', thumb_txt_false='',
-                 animate_dur=120):
+                 animate_dur=120, font_size_gain=1.0):
 
         super(SlideSwitch, self).__init__(parent=parent)
 
@@ -79,11 +79,13 @@ class SlideSwitch(QAbstractButton):
 
         self.animate_dur = animate_dur
 
+        self.font_size_gain = font_size_gain
+
         if color_palette:
 
             if isinstance(color_palette, QPalette):
 
-                palette = self.palette()
+                palette = color_palette
 
             else:
 
@@ -105,25 +107,18 @@ class SlideSwitch(QAbstractButton):
 
             self._track_color = {
                 True: palette.highlight(),
-                False: palette.dark(),
+                False: palette.shadow(),
             }
 
             self._thumb_color = {
                 True: palette.highlight(),
-                False: palette.light(),
+                False: palette.shadow(),
             }
 
             self._text_color = {
                 True: palette.highlightedText().color(),
-                False: palette.dark().color(),
+                False: palette.text().color(),
             }
-
-            # self._thumb_text = {
-            #     True: '',
-            #     False: '',
-            # }
-
-            # self._track_opacity = 0.5
 
         else:
 
@@ -142,12 +137,9 @@ class SlideSwitch(QAbstractButton):
                 False: palette.dark().color(),
             }
 
-            # self._thumb_text = {
-            #     True: '✔',
-            #     False: '✕',
-            # }
+    def setTrackOpacity(self, track_opacity):
 
-            # self._track_opacity = 1
+        self._track_opacity = track_opacity
 
     def setThumbText(self, text_true, text_false):
         '''
@@ -251,7 +243,8 @@ class SlideSwitch(QAbstractButton):
 
         font = p.font()
 
-        font.setPixelSize(1.5 * self._thumb_radius)
+        font.setPixelSize(self.font_size_gain * self._thumb_radius)
+        # font.setPixelSize(1.0 * self._thumb_radius)
 
         p.setFont(font)
 
