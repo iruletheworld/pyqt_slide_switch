@@ -3,7 +3,7 @@
 '''
 Modifications for compatibility with Python 2 and better appearance.
 
-The original C++ code was postdd by IMAN4K:
+The original C++ code was posted by IMAN4K:
 https://stackoverflow.com/a/38102598
 
 The original Python version was ported by Stefan Scherfke:
