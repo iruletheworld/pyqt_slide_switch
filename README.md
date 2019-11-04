@@ -9,4 +9,6 @@ https://stackoverflow.com/a/38102598
 The original Python version was ported by Stefan Scherfke:
 https://stackoverflow.com/a/51825815
 
-![Screen record](./record01.gif)
+<img src="./record01.gif" alt="Screen record" width="300">
+
+<!-- ![Screen record](./record01.gif) -->
