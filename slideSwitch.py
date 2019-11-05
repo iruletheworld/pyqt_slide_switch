@@ -2,23 +2,17 @@
 
 '''
 Modifications for compatibility with Python 2 and better appearance.
-
 The original C++ code was posted by IMAN4K:
 https://stackoverflow.com/a/38102598
-
 The original Python version was ported by Stefan Scherfke:
 https://stackoverflow.com/a/51825815
-
 This version is an edit based on Stefan Scherfke's work.
-
 The notable changes are the following.
-
 * Set Android style as default (:code:`thumb_radius` is larger than
   :code:`track_radius`)
 * Allow input colour palette
 * Allow other customisations
 * Explicit arguments in :code:`super()` for compatability
-
 This version is maintained by Dr. Gāo， Sī Yǔ
 '''
 
@@ -101,6 +95,31 @@ class SlideSwitch(QAbstractButton):
 
         self.setThumbText(text_true=thumb_txt_true, text_false=thumb_txt_false)
 
+    def setTrackRadius(self, track_radius):
+
+        self._track_radius = track_radius
+
+    def setThumbRadius(self, thumb_radius):
+
+        self._thumb_radius = thumb_radius
+
+    def setFontSizeGain(self, font_size_gain):
+
+        self.font_size_gain = font_size_gain
+
+    def setTrackOpacity(self, track_opacity):
+
+        self._track_opacity = track_opacity
+
+    def setThumbText(self, text_true, text_false):
+        '''
+        '''
+
+        self._thumb_text = {
+                True: text_true,
+                False: text_false,
+            }
+
     def setPalette(self, palette):
 
         if self._thumb_radius > self._track_radius:
@@ -135,19 +154,6 @@ class SlideSwitch(QAbstractButton):
             self._text_color = {
                 True: palette.highlight().color(),
                 False: palette.dark().color(),
-            }
-
-    def setTrackOpacity(self, track_opacity):
-
-        self._track_opacity = track_opacity
-
-    def setThumbText(self, text_true, text_false):
-        '''
-        '''
-
-        self._thumb_text = {
-                True: text_true,
-                False: text_false,
             }
 
     @pyqtProperty(int)
@@ -233,9 +239,13 @@ class SlideSwitch(QAbstractButton):
         p.drawEllipse(
             self.offset - self._thumb_radius,
             self._base_offset - self._thumb_radius,
+            # self._base_offset - self._track_radius,
             2 * self._thumb_radius,
             2 * self._thumb_radius,
         )
+
+        # print('self._base_offset - self._thumb_radius = %s' % (self._base_offset - self._thumb_radius))
+        # print('self._base_offset - self._track_radius = %s' % (self._base_offset - self._track_radius))
 
         p.setPen(text_color)
 
@@ -244,7 +254,6 @@ class SlideSwitch(QAbstractButton):
         font = p.font()
 
         font.setPixelSize(self.font_size_gain * self._thumb_radius)
-        # font.setPixelSize(1.0 * self._thumb_radius)
 
         p.setFont(font)
 
