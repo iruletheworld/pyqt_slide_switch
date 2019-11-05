@@ -3,25 +3,15 @@
 '''
 '''
 
-import os
 import sys
 import random
 from random import randint
 
-from PyQt5 import QtCore
-from PyQt5 import QtGui
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import QRunnable
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QPalette
 
 from guiDemo import Ui_MainWindow
-from slideSwitch import SlideSwitch
 
 
 class AppDemo(Ui_MainWindow):
