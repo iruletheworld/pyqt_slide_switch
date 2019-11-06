@@ -42,7 +42,10 @@ class SlideSwitch(QAbstractButton):
                  thumb_opacity=1.0, text_opacity=1.0,
                  color_palette=None,
                  thumb_txt_true='', thumb_txt_false='',
-                 animate_dur=120, font_size_gain=1.0):
+                 animate_dur=120, font_size_gain=1.0,
+                 direction='h'):
+        '''
+        '''
 
         super(SlideSwitch, self).__init__(parent=parent)
 
@@ -91,23 +94,47 @@ class SlideSwitch(QAbstractButton):
 
             palette = self.palette()
 
+        self._track_color = None
+        self._thumb_color = None
+        self._text_color = None
+
         self.setPalette(palette=palette)
+
+        self._thumb_text = None
 
         self.setThumbText(text_true=thumb_txt_true, text_false=thumb_txt_false)
 
+        self.direction = direction.lower()
+
+        if not (self.direction.lower() == 'h' or self.direction.lower() == 'v'):
+
+            self.direction == 'h'
+
+        else:
+
+            pass
+
     def setTrackRadius(self, track_radius):
+        '''
+        '''
 
         self._track_radius = track_radius
 
     def setThumbRadius(self, thumb_radius):
+        '''
+        '''
 
         self._thumb_radius = thumb_radius
 
     def setFontSizeGain(self, font_size_gain):
+        '''
+        '''
 
         self.font_size_gain = font_size_gain
 
     def setTrackOpacity(self, track_opacity):
+        '''
+        '''
 
         self._track_opacity = track_opacity
 
@@ -121,40 +148,35 @@ class SlideSwitch(QAbstractButton):
             }
 
     def setPalette(self, palette):
+        '''
+        '''
 
-        if self._thumb_radius > self._track_radius:
+        self._track_color = {
+            True: palette.highlight(),
+            False: palette.shadow(),
+        }
 
-            self._track_color = {
-                True: palette.highlight(),
-                False: palette.shadow(),
-            }
+        self._thumb_color = {
+            True: palette.highlight(),
+            False: palette.shadow(),
+        }
 
-            self._thumb_color = {
-                True: palette.highlight(),
-                False: palette.shadow(),
-            }
+        self._text_color = {
+            True: palette.highlightedText().color(),
+            False: palette.text().color(),
+        }
 
-            self._text_color = {
-                True: palette.highlightedText().color(),
-                False: palette.text().color(),
-            }
+    def setDirection(self, direction):
+
+        self.direction = direction.lower()
+
+        if not (self.direction.lower() == 'h' or self.direction.lower() == 'v'):
+
+            self.direction == 'h'
 
         else:
 
-            self._thumb_color = {
-                True: palette.highlightedText(),
-                False: palette.light(),
-            }
-
-            self._track_color = {
-                True: palette.highlight(),
-                False: palette.dark(),
-            }
-
-            self._text_color = {
-                True: palette.highlight().color(),
-                False: palette.dark().color(),
-            }
+            pass
 
     @pyqtProperty(int)
     def offset(self):
@@ -219,33 +241,63 @@ class SlideSwitch(QAbstractButton):
 
             text_color = self.palette().shadow().color()
 
-        p.setBrush(track_brush)
+        if self.direction.lower() == 'v':
 
-        p.setOpacity(track_opacity)
+            p.setBrush(track_brush)
 
-        p.drawRoundedRect(
-            self._margin,
-            self._margin,
-            self.width() - 2 * self._margin,
-            self.height() - 2 * self._margin,
-            self._track_radius,
-            self._track_radius,
-        )
+            p.setOpacity(track_opacity)
 
-        p.setBrush(thumb_brush)
+            p.drawRoundedRect(
+                self._margin,
+                self._margin,
+                self.height() - 2 * self._margin,
+                self.width() - 2 * self._margin,
+                self._track_radius,
+                self._track_radius,
+            )
 
-        p.setOpacity(thumb_opacity)
+            p.setBrush(thumb_brush)
 
-        p.drawEllipse(
-            self.offset - self._thumb_radius,
-            self._base_offset - self._thumb_radius,
-            # self._base_offset - self._track_radius,
-            2 * self._thumb_radius,
-            2 * self._thumb_radius,
-        )
+            p.setOpacity(thumb_opacity)
 
-        # print('self._base_offset - self._thumb_radius = %s' % (self._base_offset - self._thumb_radius))
-        # print('self._base_offset - self._track_radius = %s' % (self._base_offset - self._track_radius))
+            p.drawEllipse(
+                self._base_offset - self._thumb_radius,
+                self.offset - self._thumb_radius,
+                # self._base_offset - self._track_radius,
+                2 * self._thumb_radius,
+                2 * self._thumb_radius,
+            )
+
+        else:
+
+            p.setBrush(track_brush)
+
+            p.setOpacity(track_opacity)
+
+            p.drawRoundedRect(
+                self._margin,
+                self._margin,
+                self.width() - 2 * self._margin,
+                self.height() - 2 * self._margin,
+                self._track_radius,
+                self._track_radius,
+            )
+
+            p.setBrush(thumb_brush)
+
+            p.setOpacity(thumb_opacity)
+
+            p.drawEllipse(
+                self.offset - self._thumb_radius,
+                self._base_offset - self._thumb_radius,
+                # self._base_offset - self._track_radius,
+                2 * self._thumb_radius,
+                2 * self._thumb_radius,
+            )
+
+            # print('self._base_offset - self._thumb_radius = %s' % (self._base_offset - self._thumb_radius))
+            # print('self._base_offset - self._track_radius = %s' %
+            # (self._base_offset - self._track_radius))
 
         p.setPen(text_color)
 
