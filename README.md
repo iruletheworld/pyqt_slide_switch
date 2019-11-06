@@ -1,4 +1,4 @@
-# Android/iOS stule slide switch for PyQt
+# Android/iOS style slide switch for PyQt
 A mobile OS style slide switch (Android, iOS) in pyqt5.
 
 Found myself one day wanting a switch like Android's while doing a GUI in pyqt5. Found a usable one, but much could be imporved. Thus this project.
