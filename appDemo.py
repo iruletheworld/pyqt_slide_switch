@@ -7,6 +7,7 @@ import sys
 import random
 from random import randint
 
+from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QPalette
@@ -52,17 +53,45 @@ class AppDemo(Ui_MainWindow):
         self.default_palette = self.slideSwitch04.palette()
         self.slideSwitch04.setThumbText('✔', '✕')
 
-        self.slideSwitch01.toggled['bool'].connect(self.label01.setEnabled)
-        self.slideSwitch02.toggled['bool'].connect(self.label02.setEnabled)
-        self.slideSwitch03.toggled['bool'].connect(self.label03.setEnabled)
-        self.slideSwitch04.toggled['bool'].connect(self.label04.setEnabled)
+        for i in range(0, 8):
+
+            str_obj_slide_switch = 'slideSwitch'
+
+            str_obj_lbl = 'label'
+
+            str_no = str(i+1).zfill(2)
+
+            str_obj_slide_switch += str_no
+
+            obj_slide_switch = getattr(self, str_obj_slide_switch)
+
+            # print(obj_slide_switch.objectName())
+
+            if (i+1) <= 4:
+
+                str_obj_lbl += str_no
+
+                obj_lbl = getattr(self, str_obj_lbl)
+
+                obj_slide_switch.toggled['bool'].connect(obj_lbl.setEnabled)
+
+                obj_lbl.setEnabled(obj_slide_switch.isChecked())
+
+            else:
+
+                pass
+
+            if (i+1) >= 5:
+
+                obj_slide_switch.setDirection('v')
+
+                obj_slide_switch.update()
+
+            else:
+
+                pass
 
         self.allOn()
-
-        self.label01.setEnabled(self.slideSwitch01.isChecked())
-        self.label02.setEnabled(self.slideSwitch02.isChecked())
-        self.label03.setEnabled(self.slideSwitch03.isChecked())
-        self.label04.setEnabled(self.slideSwitch04.isChecked())
 
         self.btnDefault.clicked.connect(self.defaultColors)
         self.btnShuffle.clicked.connect(self.shuffleColors)
@@ -122,31 +151,33 @@ class AppDemo(Ui_MainWindow):
         '''
         '''
 
-        list_switches = [
-            self.slideSwitch01,
-            self.slideSwitch02,
-            self.slideSwitch03,
-            self.slideSwitch04
-        ]
+        for i in range(0, 8):
 
-        for i in list_switches:
+            str_obj = 'slideSwitch'
 
-            i.setChecked(True)
+            str_no = str(i+1).zfill(2)
+
+            str_obj += str_no
+
+            obj = getattr(self, str_obj)
+
+            obj.setChecked(True)
 
     def allOff(self):
         '''
         '''
 
-        list_switches = [
-            self.slideSwitch01,
-            self.slideSwitch02,
-            self.slideSwitch03,
-            self.slideSwitch04
-        ]
+        # for i in range(0, 8):
 
-        for i in list_switches:
+        #     str_obj = 'slideSwitch'
 
-            i.setChecked(False)
+        #     str_no = str(i+1).zfill(2)
+
+        #     str_obj += str_no
+
+        #     obj = getattr(self, str_obj)
+
+        #     obj.setChecked(False)
 
 
 def main():

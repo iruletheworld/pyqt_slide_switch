@@ -61,10 +61,11 @@ class SlideSwitch(QAbstractButton):
 
         self._base_offset  = max(self._thumb_radius, self._track_radius)
 
-        self._end_offset = {
-            True: (lambda: self.width() - self._base_offset),
-            False: (lambda: self._base_offset),
-        }
+
+        # self._end_offset = {
+        #     True: (lambda: self.width() - self._base_offset),
+        #     False: (lambda: self._base_offset),
+        # }
 
         self._offset = self._base_offset
 
@@ -108,11 +109,25 @@ class SlideSwitch(QAbstractButton):
 
         if not (self.direction.lower() == 'h' or self.direction.lower() == 'v'):
 
-            self.direction == 'h'
+            self.direction = 'h'
 
         else:
 
             pass
+
+        if self.direction == 'h':
+
+            self._end_offset = {
+                True: (lambda: self.width() - self._base_offset),
+                False: (lambda: self._base_offset),
+            }
+
+        else:
+
+            self._end_offset = {
+                True: (lambda: self._base_offset),
+                False: (lambda: self.height() - self._base_offset),
+            }
 
     def setTrackRadius(self, track_radius):
         '''
@@ -172,11 +187,26 @@ class SlideSwitch(QAbstractButton):
 
         if not (self.direction.lower() == 'h' or self.direction.lower() == 'v'):
 
-            self.direction == 'h'
+            self.direction = 'h'
 
         else:
 
             pass
+
+        if self.direction == 'h':
+
+            self._end_offset = {
+                True: (lambda: self.width() - self._base_offset),
+                False: (lambda: self._base_offset),
+            }
+
+        else:
+
+            self._end_offset = {
+                True: (lambda: self._base_offset),
+                False: (lambda: self.height() - self._base_offset),
+            }
+
 
     @pyqtProperty(int)
     def offset(self):
@@ -190,7 +220,7 @@ class SlideSwitch(QAbstractButton):
 
         self.update()
 
-    def sizeHint(self):  # pylint: disable=invalid-name
+    def sizeHint(self):
 
         return QSize(
             4 * self._track_radius + 2 * self._margin,
@@ -250,8 +280,8 @@ class SlideSwitch(QAbstractButton):
             p.drawRoundedRect(
                 self._margin,
                 self._margin,
-                self.height() - 2 * self._margin,
                 self.width() - 2 * self._margin,
+                self.height() - 2 * self._margin,
                 self._track_radius,
                 self._track_radius,
             )
@@ -262,6 +292,7 @@ class SlideSwitch(QAbstractButton):
 
             p.drawEllipse(
                 self._base_offset - self._thumb_radius,
+                # self.width() - self._thumb_radius,
                 self.offset - self._thumb_radius,
                 # self._base_offset - self._track_radius,
                 2 * self._thumb_radius,
