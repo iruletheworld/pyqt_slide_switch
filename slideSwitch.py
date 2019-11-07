@@ -61,12 +61,6 @@ class SlideSwitch(QAbstractButton):
 
         self._base_offset  = max(self._thumb_radius, self._track_radius)
 
-
-        # self._end_offset = {
-        #     True: (lambda: self.width() - self._base_offset),
-        #     False: (lambda: self._base_offset),
-        # }
-
         self._offset = self._base_offset
 
         self.thumb_opacity = thumb_opacity
@@ -94,6 +88,8 @@ class SlideSwitch(QAbstractButton):
         else:
 
             palette = self.palette()
+
+        # self.painter = QPainter(self)
 
         self._track_color = None
         self._thumb_color = None
@@ -195,6 +191,7 @@ class SlideSwitch(QAbstractButton):
 
         if self.direction == 'h':
 
+            # 终点位置
             self._end_offset = {
                 True: (lambda: self.width() - self._base_offset),
                 False: (lambda: self._base_offset),
@@ -207,6 +204,11 @@ class SlideSwitch(QAbstractButton):
                 False: (lambda: self.height() - self._base_offset),
             }
 
+    def setAnimDur(self, animate_dur):
+        '''
+        '''
+
+        self.animate_dur = animate_dur
 
     @pyqtProperty(int)
     def offset(self):
@@ -239,7 +241,7 @@ class SlideSwitch(QAbstractButton):
 
         self.offset = self._end_offset[self.isChecked()]()
 
-    def paintEvent(self, event):  # pylint: disable=invalid-name, unused-argument
+    def paintEvent(self, event):
 
         p = QPainter(self)
 
@@ -291,12 +293,31 @@ class SlideSwitch(QAbstractButton):
             p.setOpacity(thumb_opacity)
 
             p.drawEllipse(
-                self._base_offset - self._thumb_radius,
-                # self.width() - self._thumb_radius,
+                self.width()/2.0 - self._thumb_radius,
                 self.offset - self._thumb_radius,
-                # self._base_offset - self._track_radius,
                 2 * self._thumb_radius,
                 2 * self._thumb_radius,
+            )
+
+            p.setPen(text_color)
+
+            p.setOpacity(text_opacity)
+
+            font = p.font()
+
+            font.setPixelSize(self.font_size_gain * self._thumb_radius)
+
+            p.setFont(font)
+
+            p.drawText(
+                QRectF(
+                    self.width()/2.0 - self._thumb_radius,
+                    self.offset - self._thumb_radius,
+                    2 * self._thumb_radius,
+                    2 * self._thumb_radius,
+                ),
+                Qt.AlignCenter,
+                self._thumb_text[self.isChecked()],
             )
 
         else:
@@ -320,38 +341,33 @@ class SlideSwitch(QAbstractButton):
 
             p.drawEllipse(
                 self.offset - self._thumb_radius,
-                self._base_offset - self._thumb_radius,
-                # self._base_offset - self._track_radius,
+                self.height()/2.0 - self._thumb_radius,
                 2 * self._thumb_radius,
                 2 * self._thumb_radius,
             )
 
-            # print('self._base_offset - self._thumb_radius = %s' % (self._base_offset - self._thumb_radius))
-            # print('self._base_offset - self._track_radius = %s' %
-            # (self._base_offset - self._track_radius))
+            p.setPen(text_color)
 
-        p.setPen(text_color)
+            p.setOpacity(text_opacity)
 
-        p.setOpacity(text_opacity)
+            font = p.font()
 
-        font = p.font()
+            font.setPixelSize(self.font_size_gain * self._thumb_radius)
 
-        font.setPixelSize(self.font_size_gain * self._thumb_radius)
+            p.setFont(font)
 
-        p.setFont(font)
+            p.drawText(
+                QRectF(
+                    self.offset - self._thumb_radius,
+                    self.height()/2.0 - self._thumb_radius,
+                    2 * self._thumb_radius,
+                    2 * self._thumb_radius,
+                ),
+                Qt.AlignCenter,
+                self._thumb_text[self.isChecked()],
+            )
 
-        p.drawText(
-            QRectF(
-                self.offset - self._thumb_radius,
-                self._base_offset - self._thumb_radius,
-                2 * self._thumb_radius,
-                2 * self._thumb_radius,
-            ),
-            Qt.AlignCenter,
-            self._thumb_text[self.isChecked()],
-        )
-
-    def mouseReleaseEvent(self, event):  # pylint: disable=invalid-name
+    def mouseReleaseEvent(self, event):
 
         super(SlideSwitch, self).mouseReleaseEvent(event)
 
@@ -368,7 +384,7 @@ class SlideSwitch(QAbstractButton):
 
             anim.start()
 
-    def enterEvent(self, event):  # pylint: disable=invalid-name
+    def enterEvent(self, event):
 
         self.setCursor(Qt.PointingHandCursor)
 

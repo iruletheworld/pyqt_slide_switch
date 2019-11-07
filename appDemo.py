@@ -8,6 +8,7 @@ import random
 from random import randint
 
 from PyQt5 import QtCore
+from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QPalette
@@ -20,6 +21,7 @@ class AppDemo(Ui_MainWindow):
     def __init__(self):
 
         super(AppDemo, self).__init__()
+
 
     def setupUi(self, MW):
 
@@ -34,14 +36,14 @@ class AppDemo(Ui_MainWindow):
 
         self.palette_black_orange = QPalette()
 
-        self.palette_black_orange.setColor(QPalette.Highlight, QColor(255, 140, 0))
-        self.palette_black_orange.setColor(QPalette.Shadow, QColor(0, 0, 0))
+        self.palette_black_orange.setColor(QPalette.Highlight, QColor(239, 120, 55))
+        self.palette_black_orange.setColor(QPalette.Shadow, QColor(53, 53, 53))
 
         self.slideSwitch02.setPalette(self.palette_black_orange)
 
         self.palette_white_purple = QPalette()
 
-        self.palette_white_purple.setColor(QPalette.Highlight, QColor(123, 104, 238))
+        self.palette_white_purple.setColor(QPalette.Highlight, QColor(133, 104, 238))
         self.palette_white_purple.setColor(QPalette.Shadow, QColor(200, 200, 200))
 
         self.palette_white_purple.setColor(QPalette.HighlightedText, QColor(255, 255, 0))
@@ -52,6 +54,8 @@ class AppDemo(Ui_MainWindow):
 
         self.default_palette = self.slideSwitch04.palette()
         self.slideSwitch04.setThumbText('✔', '✕')
+
+        int_anim_dur = 120
 
         for i in range(0, 8):
 
@@ -64,8 +68,6 @@ class AppDemo(Ui_MainWindow):
             str_obj_slide_switch += str_no
 
             obj_slide_switch = getattr(self, str_obj_slide_switch)
-
-            # print(obj_slide_switch.objectName())
 
             if (i+1) <= 4:
 
@@ -83,7 +85,20 @@ class AppDemo(Ui_MainWindow):
 
             if (i+1) >= 5:
 
+                int_anim_dur += int_anim_dur
+
                 obj_slide_switch.setDirection('v')
+
+                obj_slide_switch.setThumbText('是', '否')
+
+                obj_slide_switch.setTrackRadius(8)
+
+                obj_slide_switch.setAnimDur(int_anim_dur)
+
+                font = QtGui.QFont()
+                font.setFamily("Microsoft YaHei")
+                font.setPointSize(6)
+                obj_slide_switch.setFont(font)
 
                 obj_slide_switch.update()
 
@@ -127,25 +142,36 @@ class AppDemo(Ui_MainWindow):
         '''
         '''
 
-        list_switches = [
-            self.slideSwitch01,
-            self.slideSwitch02,
-            self.slideSwitch03,
-            self.slideSwitch04
-        ]
+        for i in range(0, 8):
 
-        for i in list_switches:
+            str_obj = 'slideSwitch'
+
+            str_no = str(i+1).zfill(2)
+
+            str_obj += str_no
+
+            obj = getattr(self, str_obj)
 
             random.seed()
 
             palette_temp = QPalette()
 
-            palette_temp.setColor(QPalette.Highlight, QColor(randint(0,255), randint(0,255), randint(0,255)))
-            palette_temp.setColor(QPalette.Shadow, QColor(randint(0,255), randint(0,255), randint(0,255)))
+            int_rh = randint(0, 255)
+            int_gh = randint(0, 255)
+            int_bh = randint(0, 255)
 
-            i.setPalette(palette_temp)
+            int_rs = randint(0, 255)
+            int_gs = randint(0, 255)
+            int_bs = randint(0, 255)
 
-            i.update()
+            palette_temp.setColor(QPalette.Highlight,
+                                  QColor(int_rh, int_gh, int_bh))
+            palette_temp.setColor(
+                QPalette.Shadow, QColor(int_rs, int_gs, int_bs))
+
+            obj.setPalette(palette_temp)
+
+            obj.update()
 
     def allOn(self):
         '''
@@ -167,17 +193,17 @@ class AppDemo(Ui_MainWindow):
         '''
         '''
 
-        # for i in range(0, 8):
+        for i in range(0, 8):
 
-        #     str_obj = 'slideSwitch'
+            str_obj = 'slideSwitch'
 
-        #     str_no = str(i+1).zfill(2)
+            str_no = str(i+1).zfill(2)
 
-        #     str_obj += str_no
+            str_obj += str_no
 
-        #     obj = getattr(self, str_obj)
+            obj = getattr(self, str_obj)
 
-        #     obj.setChecked(False)
+            obj.setChecked(False)
 
 
 def main():
