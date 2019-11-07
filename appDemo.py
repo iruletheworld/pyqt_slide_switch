@@ -7,6 +7,7 @@ import sys
 import random
 from random import randint
 
+from PyQt5 import Qt
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
@@ -22,38 +23,36 @@ class AppDemo(Ui_MainWindow):
 
         super(AppDemo, self).__init__()
 
-
     def setupUi(self, MW):
 
         super(AppDemo, self).setupUi(MW)
 
-        self.palette_red_green = QPalette()
+        self.palette01 = QPalette()
+        self.palette01.setColor(QPalette.Highlight, QColor(0, 136, 0))
+        self.palette01.setColor(QPalette.Shadow, QColor(128, 0, 0))
 
-        self.palette_red_green.setColor(QPalette.Highlight, QColor(0, 136, 0))
-        self.palette_red_green.setColor(QPalette.Shadow, QColor(128, 0, 0))
+        self.palette02 = QPalette()
+        self.palette02.setColor(QPalette.Highlight, QColor(239, 120, 55))
+        self.palette02.setColor(QPalette.Shadow, QColor(53, 53, 53))
 
-        self.slideSwitch01.setPalette(self.palette_red_green)
+        self.palette03 = QPalette()
+        self.palette03.setColor(QPalette.Highlight, QColor(133, 104, 238))
+        self.palette03.setColor(QPalette.Shadow, QColor(200, 200, 200))
+        self.palette03.setColor(QPalette.HighlightedText, QColor(255, 255, 0))
+        self.palette03.setColor(QPalette.Text, QColor(255, 255, 255))
 
-        self.palette_black_orange = QPalette()
+        self.palette04 = QPalette()
+        self.palette04.setColor(QPalette.Highlight, QColor(0, 0, 255))
+        self.palette04.setColor(QPalette.Shadow, QColor(188, 160, 199))
 
-        self.palette_black_orange.setColor(QPalette.Highlight, QColor(239, 120, 55))
-        self.palette_black_orange.setColor(QPalette.Shadow, QColor(53, 53, 53))
-
-        self.slideSwitch02.setPalette(self.palette_black_orange)
-
-        self.palette_white_purple = QPalette()
-
-        self.palette_white_purple.setColor(QPalette.Highlight, QColor(133, 104, 238))
-        self.palette_white_purple.setColor(QPalette.Shadow, QColor(200, 200, 200))
-
-        self.palette_white_purple.setColor(QPalette.HighlightedText, QColor(255, 255, 0))
-        self.palette_white_purple.setColor(QPalette.Text, QColor(255, 255, 255))
-
-        self.slideSwitch03.setPalette(self.palette_white_purple)
+        self.slideSwitch01.setPalette(self.palette01)
+        self.slideSwitch02.setPalette(self.palette02)
+        self.slideSwitch03.setPalette(self.palette03)
         self.slideSwitch03.setThumbText('On', 'Off')
-
-        self.default_palette = self.slideSwitch04.palette()
+        self.slideSwitch04.setPalette(self.palette04)
         self.slideSwitch04.setThumbText('✔', '✕')
+
+        self.default_palette = self.slideSwitch05.palette()
 
         int_anim_dur = 120
 
@@ -118,25 +117,33 @@ class AppDemo(Ui_MainWindow):
         '''
         '''
 
-        list_switches = [
-            self.slideSwitch01,
-            self.slideSwitch02,
-            self.slideSwitch03,
-            self.slideSwitch04
-        ]
+        for i in range(0, 8):
 
-        list_palettes = [
-            self.palette_red_green,
-            self.palette_black_orange,
-            self.palette_white_purple,
-            self.default_palette
-        ]
+            str_no = str(i+1).zfill(2)
 
-        for i, j in zip(list_switches, list_palettes):
+            str_obj_slide_switch = 'slideSwitch'
 
-            i.setPalette(j)
+            str_obj_palette = 'palette'
 
-            i.update()
+            str_obj_slide_switch += str_no
+
+            str_obj_palette += str_no
+
+            obj_slide_switch = getattr(self, str_obj_slide_switch)
+
+            if (i+1) <= 4:
+
+                obj_palette = getattr(self, str_obj_palette)
+
+                obj_slide_switch.setPalette(obj_palette)
+
+                obj_slide_switch.update()
+
+            else:
+
+                obj_slide_switch.setPalette(self.default_palette)
+
+                obj_slide_switch.update()
 
     def shuffleColors(self):
         '''
