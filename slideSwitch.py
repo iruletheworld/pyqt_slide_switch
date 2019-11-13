@@ -34,6 +34,7 @@ __version__ = '1.0.0'
 
 class SlideSwitch(QAbstractButton):
     '''
+    Android style slide switch class. Inherited from :code:`QAbstractButton`.
     '''
 
     def __init__(self, parent=None,
@@ -45,6 +46,105 @@ class SlideSwitch(QAbstractButton):
                  animate_dur=120, font_size_gain=1.0,
                  direction='h'):
         '''
+        Constructor of the SlideSwitch object.
+
+        Parameters
+        -----------
+        parent : QObject
+
+            The parent object for the slide switch
+
+            Default = None
+
+        track_radius : float
+
+            Radius of the track. Affects how wide the track is and how
+            "rounded" the track ends.
+
+            Default = 10
+
+        thumb_radius : float
+
+            Radius of the thumb. Affects the size of the thumb circle.
+
+            Default = 18
+
+        track_opacity : float
+
+            Affects the opacity of the track. Should be different than
+            the opacity of thumb to make it more visible.
+
+            Default = 0.5
+
+        thumb_opacity : float
+
+            Affects the opacity of the track. Should be different than
+            the opacity of track to make it more visible.
+
+            Default = 1.0
+
+        text_opacity : float
+
+            Affects the opacity of the texts in the thumb.
+
+            Default = 1.0
+
+        color_palette : QPalette
+
+            The colour palette for the slide switch object.
+
+            The :code:`highlight` of palette is used for the on status
+            for both the track and the thumb (so they should have different)
+            opacity.
+
+            The :code:`shadow` of palette is used for the off status
+            for both the track and the thumb (so they should have different)
+            opacity.
+
+            The colour of the :code:`highlightedText` of palette is
+            used for the on status for the thumb text.
+
+            The colour of the :code:`text` of palette is used for the
+            off status for the thumb text.
+
+            If a palette is not given, the inherited palette would be used.
+
+            Default = None, i.e., the inherited palette is used.
+
+        thumb_txt_true : string
+
+            Text in the thumb for the on status.
+
+            Default = ''
+
+        thumb_txt_false : string
+
+            Text in the thumb for the off status.
+
+            Default = ''
+
+        animate_dur : float
+
+            Time duration of the animation. Affects how fast the thumb travels
+            on the track.
+
+            Default = 120
+
+        font_size_gain : float
+
+            Gain for the text size inside the thumb.
+
+            Default = 1.0
+
+        direction : string
+
+            This must either be "h" or "v".
+
+            "h" for horizontal switch direction.
+
+            "v" for vertical switch direction.
+
+            Default = 'h'
         '''
 
         super(SlideSwitch, self).__init__(parent=parent)
@@ -88,8 +188,6 @@ class SlideSwitch(QAbstractButton):
         else:
 
             palette = self.palette()
-
-        # self.painter = QPainter(self)
 
         self._track_color = None
         self._thumb_color = None
